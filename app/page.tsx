@@ -1,45 +1,30 @@
-import { demos } from '@/lib/demos';
-import Link from 'next/link';
+'use client'
+
+import { useState } from 'react';
+
+function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 export default function Page() {
+  const [count, setCount] = useState(0);
+  const [colour, setColour] = useState(getRandomColor);
+
   return (
-    <div className="space-y-6">
-      <div className="space-y-8 text-white">
-        {demos
-          .filter((section) =>
-            section.items.some((x) => typeof x.isDisabled === 'undefined'),
-          )
-          .map((section) => {
-            return (
-              <div key={section.name} className="space-y-3">
-                <div className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                  {section.name}
-                </div>
+    <div className="m-5">
+      <h1 className="text-3xl font-bold underline">Hello, Next.js!  </h1>
+      <div className="m-5">
+        <p className="text-xl font-bold">You've clicked {count} times</p>
+        <button className="m-5 btn btn-blue" onClick={() => setCount(count + 1)}>
+          Click me
+        </button>
+        <button className="m-5 btn btn-blue" onClick={() => setCount(0)}>Reset</button>
 
-                <div className="grid grid-cols-2 gap-5">
-                  {section.items
-                    .filter((item) => !item.isDisabled)
-                    .map((item) => {
-                      return (
-                        <Link
-                          href={`/${item.slug}`}
-                          key={item.name}
-                          className="block space-y-1.5 rounded-lg border border-white/10 px-4 py-3 hover:border-white/20"
-                        >
-                          <div>{item.name}</div>
-
-                          {item.description ? (
-                            <div className="line-clamp-3 text-sm text-zinc-400">
-                              {item.description}
-                            </div>
-                          ) : null}
-                        </Link>
-                      );
-                    })}
-                </div>
-              </div>
-            );
-          })}
       </div>
     </div>
   );
